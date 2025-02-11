@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>نظام الاختراق المرعب</title>
+  <style>
+    /* الخلفية السوداء مع نص أخضر بنمط "الهاكر" */
+    body {
+      background-color: black;
+      color: #00FF00;
+      font-family: 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 20px;
+      overflow: hidden;
+    }
+    /* منطقة عرض النصوص */
+    #output {
+      white-space: pre-wrap;
+      font-size: 1.1em;
+      line-height: 1.4em;
+    }
+    /* تأثير المؤشر اللامع */
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      background-color: #00FF00;
+      margin-left: 2px;
+      animation: blink 0.8s steps(1) infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    /* تأثير الارتجاج "Glitch" لإضفاء طابع المستقبل المرعب */
+    .glitch {
+      animation: glitch 0.3s linear infinite;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 2px 2px red; }
+      20% { text-shadow: -2px -2px cyan; }
+      40% { text-shadow: 2px -2px red; }
+      60% { text-shadow: -2px 2px cyan; }
+      80% { text-shadow: 2px 2px red; }
+      100% { text-shadow: -2px -2px cyan; }
+    }
+  </style>
+</head>
+<body>
+  <div id="output"></div>
+
+  <script>
+    // الحصول على العنصر الذي ستظهر فيه الرسائل
+    const output = document.getElementById("output");
+
+    // مجموعة من الرسائل بلهجة سعودية، مع تأثيرات مخيفة ومستقبلية
+    const messages = [
+      "تم!",
+      "مرحباً بك ...",
+      "",
+      "المستخدم: خالد حمود العازمي",
+      "رمز الدخول: ********",
+      "",
+      "جاري فك التشفير!...",
+      "",
+      "",
+    ];
+
+    let currentMessage = 0;
+    let currentChar = 0;
+    const typingSpeed = 50;  // سرعة كتابة كل حرف (بالملي ثانية)
+    const linePause = 500;   // تأخير بين السطور
+
+    // إنشاء وإضافة عنصر المؤشر
+    const cursor = document.createElement("span");
+    cursor.className = "cursor";
+    cursor.textContent = " ";
+    output.appendChild(cursor);
+
+    // دالة لكتابة الرسائل حرف بحرف مع تأثير درامي
+    function typeMessage() {
+      if (currentMessage < messages.length) {
+        const line = messages[currentMessage];
+
+        if (currentChar < line.length) {
+          // إضافة الحرف قبل المؤشر
+          cursor.insertAdjacentText("beforebegin", line[currentChar]);
+          currentChar++;
+          setTimeout(typeMessage, typingSpeed);
+        } else {
+          // انتهاء السطر، إضافة سطر جديد والانتقال للرسالة التالية
+          cursor.insertAdjacentHTML("beforebegin", "\n");
+          currentMessage++;
+          currentChar = 0;
+          setTimeout(typeMessage, linePause);
+        }
+      } else {
+        // بعد انتهاء الرسائل الثابتة، يبدأ عرض "رموز اختراق" عشوائية مع تأثيرات مستقبلية
+        simulateHackCode();
+        startGlitchEffect();
+      }
+    }
+
+    // دالة لمحاكاة تدفق الرموز الرقمية بشكل عشوائي
+    function simulateHackCode() {
+      setInterval(() => {
+        let line = "";
+        const characters = "01ABCDEF!@#$%^&*()-=+<>/?";
+        for (let i = 0; i < 80; i++) {
+          line += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        output.insertAdjacentHTML("beforeend", line + "\n");
+        window.scrollTo(0, document.body.scrollHeight);
+      }, 100);
+    }
+
+    // دالة لتفعيل وإيقاف تأثير الارتجاج (Glitch) على النص بشكل متقطع
+    function startGlitchEffect() {
+      setInterval(() => {
+        output.classList.toggle("glitch");
+      }, 2000);
+    }
+
+    // بدء الكتابة بمجرد تحميل المحتوى
+    document.addEventListener("DOMContentLoaded", typeMessage);
+  </script>
+</body>
+</html>
