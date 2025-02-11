@@ -3,73 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <title>نظام الاختراق المرعب</title>
-  <style>
-    /* الخلفية السوداء مع نص أخضر بنمط "الهاكر" */
-    body {
-      background-color: black;
-      color: #00FF00;
-      font-family: 'Courier New', Courier, monospace;
-      margin: 0;
-      padding: 20px;
-      overflow: hidden;
-    }
-    /* منطقة عرض النصوص */
-    #output {
-      white-space: pre-wrap;
-      font-size: 1.1em;
-      line-height: 1.4em;
-    }
-    /* تأثير المؤشر اللامع */
-    .cursor {
-      display: inline-block;
-      width: 10px;
-      background-color: #00FF00;
-      margin-left: 2px;
-      animation: blink 0.8s steps(1) infinite;
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-    /* تأثير الارتجاج "Glitch" لإضفاء طابع المستقبل المرعب */
-    .glitch {
-      animation: glitch 0.3s linear infinite;
-    }
-    @keyframes glitch {
-      0% { text-shadow: 2px 2px red; }
-      20% { text-shadow: -2px -2px cyan; }
-      40% { text-shadow: 2px -2px red; }
-      60% { text-shadow: -2px 2px cyan; }
-      80% { text-shadow: 2px 2px red; }
-      100% { text-shadow: -2px -2px cyan; }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div id="output"></div>
-
+  
+  <!-- GIF المخيف القفزي في الزاوية -->
+  <div id="scaryGif">
+    <img src="https://www.icegif.com/wp-content/uploads/2022/01/icegif-179.gif" alt="Scary GIF">
+  </div>
+  
+  <!-- GIF المخيف في شاشة كاملة يظهر كل 4 ثوانٍ -->
+  <div id="fullScreenGif">
+    <img src="https://www.icegif.com/wp-content/uploads/2022/01/icegif-179.gif" alt="Scary Full Screen GIF">
+  </div>
+  
   <script>
-    // الحصول على العنصر الذي ستظهر فيه الرسائل
-    const output = document.getElementById("output");
+    // طلب اسم المستخدم من خلال نافذة منبثقة
+    let userName = prompt("من فضلك أدخل اسم المستخدم الخاص بك:");
+    if (!userName || userName.trim() === "") {
+      userName = "مجهول"; // إذا لم يُدخل المستخدم أي قيمة، يتم تعيين اسم افتراضي
+    }
 
-    // مجموعة من الرسائل بلهجة سعودية، مع تأثيرات مخيفة ومستقبلية
+    // تعريف مجموعة الرسائل مع إدراج اسم المستخدم تلقائيًا
     const messages = [
       "تم!",
-      "مرحباً بك ...",
+      "تم التعرف على معلوماتك بنجاح!",
+      "▮▮▮▮ 5%",
+      "▮▮▮▮▮▮ 20%",
+      "▮▮▮▮▮▮▮▮▮ 40%",
+      "▮▮▮▮▮▮▮▮▮▮▮▮ 60%",
+      "▮▮▮▮▮▮▮▮▮▮▮▮▮▮ 100%",
       "",
-      "المستخدم: خالد حمود العازمي",
-      "رمز الدخول: ********",
-      "",
-      "جاري فك التشفير!...",
-      "",
+      "المستخدم: " + userName,
+      "كلمه المرور: **********",
       "",
     ];
+
+    // تعطيل القائمة السياقية (زر الماوس الأيمن)
+    document.addEventListener("contextmenu", function(e) {
+      e.preventDefault();
+    });
+    
+    // منع إعادة تحميل الصفحة بواسطة مفاتيح F5 وCtrl+R
+    document.addEventListener("keydown", function(e) {
+      if (e.keyCode === 116) { // F5
+        e.preventDefault();
+      }
+      if (e.ctrlKey && e.keyCode === 82) { // Ctrl+R
+        e.preventDefault();
+      }
+    });
+    
+    // عرض تحذير عند محاولة المستخدم مغادرة الصفحة
+    window.onbeforeunload = function(e) {
+      e = e || window.event;
+      if (e) {
+        e.returnValue = 'هل أنت متأكد أنك تريد ترك النظام؟';
+      }
+      return 'هل أنت متأكد أنك تريد ترك النظام؟';
+    };
+
+    // الحصول على العنصر الذي ستظهر فيه الرسائل
+    const output = document.getElementById("output");
 
     let currentMessage = 0;
     let currentChar = 0;
     const typingSpeed = 50;  // سرعة كتابة كل حرف (بالملي ثانية)
     const linePause = 500;   // تأخير بين السطور
 
-    // إنشاء وإضافة عنصر المؤشر
+    // إنشاء وإضافة عنصر المؤشر اللامع
     const cursor = document.createElement("span");
     cursor.className = "cursor";
     cursor.textContent = " ";
@@ -79,23 +82,22 @@
     function typeMessage() {
       if (currentMessage < messages.length) {
         const line = messages[currentMessage];
-
         if (currentChar < line.length) {
-          // إضافة الحرف قبل المؤشر
           cursor.insertAdjacentText("beforebegin", line[currentChar]);
           currentChar++;
           setTimeout(typeMessage, typingSpeed);
         } else {
-          // انتهاء السطر، إضافة سطر جديد والانتقال للرسالة التالية
           cursor.insertAdjacentHTML("beforebegin", "\n");
           currentMessage++;
           currentChar = 0;
           setTimeout(typeMessage, linePause);
         }
       } else {
-        // بعد انتهاء الرسائل الثابتة، يبدأ عرض "رموز اختراق" عشوائية مع تأثيرات مستقبلية
+        // بعد انتهاء الرسائل الثابتة، يبدأ عرض رموز اختراق عشوائية مع تأثيرات مستقبلية
         simulateHackCode();
         startGlitchEffect();
+        triggerScreenShake();
+        triggerFullScreenGif();
       }
     }
 
@@ -112,14 +114,35 @@
       }, 100);
     }
 
-    // دالة لتفعيل وإيقاف تأثير الارتجاج (Glitch) على النص بشكل متقطع
+    // دالة لتفعيل تأثير الارتجاج (Glitch) بشكل متقطع
     function startGlitchEffect() {
       setInterval(() => {
         output.classList.toggle("glitch");
       }, 2000);
     }
 
-    // بدء الكتابة بمجرد تحميل المحتوى
+    // دالة لتفعيل تأثير اهتزاز الشاشة بين الحين والآخر
+    function triggerScreenShake() {
+      setInterval(() => {
+        document.body.classList.add("shake");
+        setTimeout(() => {
+          document.body.classList.remove("shake");
+        }, 500);
+      }, 5000);
+    }
+
+    // دالة لعرض GIF في شاشة كاملة كل 4 ثوانٍ لمدة ثانية واحدة
+    function triggerFullScreenGif() {
+      setInterval(() => {
+        const fullScreenGif = document.getElementById("fullScreenGif");
+        fullScreenGif.style.display = "block";
+        setTimeout(() => {
+          fullScreenGif.style.display = "none";
+        }, 1000); // يعرض الـ GIF لمدة 1 ثانية
+      }, 4000);
+    }
+
+    // بدء كتابة الرسائل بعد تحميل المحتوى
     document.addEventListener("DOMContentLoaded", typeMessage);
   </script>
 </body>
